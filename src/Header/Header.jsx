@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -55,18 +56,25 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h6" className={classes.title}>
-            TheMovieCollection
+          <Typography className={classes.title}>TheMovieCollection</Typography>
+          <Typography style={{ flexGrow: "6" }}>
+            <Button variant="h6" color="inherit">
+              Discover
+            </Button>
           </Typography>
-          <Button className={classes.title} color="inherit">
-            Discover
-          </Button>
-          <Button color="inherit">
-            <Link to="/Login">Login</Link>
-          </Button>
-          {currentUser && (
-            <Button onClick={logout} color="white">
-              Logout
+
+          {currentUser ? (
+            <div>
+              <Button>
+                <IconButton aria-label="add to favorites">
+                  <FavoriteIcon />
+                </IconButton>
+              </Button>
+              <Button onClick={logout}>Logout</Button>
+            </div>
+          ) : (
+            <Button color="inherit">
+              <Link to="/Login">Login</Link>
             </Button>
           )}
         </Toolbar>
