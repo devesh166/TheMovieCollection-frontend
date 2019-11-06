@@ -45,7 +45,7 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" color="white">
         <Toolbar>
           {/* <IconButton
             edge="start"
@@ -58,14 +58,14 @@ export default function Header() {
           <Typography variant="h6" className={classes.title}>
             TheMovieCollection
           </Typography>
-          <Button   className={classes.title}>
+          <Button className={classes.title} color="inherit">
             Discover
           </Button>
           <Button color="inherit">
             <Link to="/Login">Login</Link>
           </Button>
           {currentUser && (
-            <Button onClick={logout} color="inherit">
+            <Button onClick={logout} color="white">
               Logout
             </Button>
           )}
