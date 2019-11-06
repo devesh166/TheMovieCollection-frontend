@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import fire from "../Config/Fire";
 import { Route, withRouter } from "react-router-dom";
+import Header from "../Header/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Login extends Component {
@@ -27,7 +28,7 @@ class Login extends Component {
       .then(u => {
         console.log(u);
         localStorage.setItem("user", JSON.stringify(u));
-        // this.props.history.push("/home");
+        this.props.history.push("/home");
         // console.log(this.props.history);
       })
       .catch(error => {
@@ -46,49 +47,52 @@ class Login extends Component {
   }
   render() {
     return (
-      <div className="col-md-6">
-        <form>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input
-              value={this.state.email}
-              onChange={this.handleChange}
-              type="email"
-              name="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Enter email"
-            />
-            <small id="emailHelp" class="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-              value={this.state.password}
-              onChange={this.handleChange}
-              type="password"
-              name="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Password"
-            />
-          </div>
-          <button type="submit" onClick={this.login} class="btn btn-primary">
-            Login
-          </button>
-          <button
-            onClick={this.signup}
-            style={{ marginLeft: "25px" }}
-            className="btn btn-success"
-          >
-            Signup
-          </button>
-        </form>
-      </div>
+      <React.Fragment>
+        <Header />
+        <div className="col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input
+                value={this.state.email}
+                onChange={this.handleChange}
+                type="email"
+                name="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+              <small id="emailHelp" class="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input
+                value={this.state.password}
+                onChange={this.handleChange}
+                type="password"
+                name="password"
+                class="form-control"
+                id="exampleInputPassword1"
+                placeholder="Password"
+              />
+            </div>
+            <button type="submit" onClick={this.login} class="btn btn-primary">
+              Login
+            </button>
+            <button
+              onClick={this.signup}
+              style={{ marginLeft: "25px" }}
+              className="btn btn-success"
+            >
+              Signup
+            </button>
+          </form>
+        </div>
+      </React.Fragment>
     );
   }
 }
-export default withRouter(Login);
+export default Login;

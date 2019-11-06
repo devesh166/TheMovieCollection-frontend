@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import fire from "../Config/Fire";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -21,7 +22,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Header() {
+  let logout = () => {
+    fire
+      .auth()
+      .signOut()
+      .then(
+        function() {
+          localStorage.removeItem("user");
+          setcurrentUser(null);
+        },
+        function(error) {
+          // An error happened.
+        }
+      );
+  };
+
   const classes = useStyles();
+  // let currentUser =
+  const [currentUser, setcurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
 
   return (
     <div className={classes.root}>
@@ -36,13 +56,19 @@ export default function Header() {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" className={classes.title}>
-            News
+            TheMovieCollection
           </Typography>
-          <Button color="inherit">
-            {/* <Link to="/Login" > */}
-            Login
-            {/* </Link> */}
+          <Button   className={classes.title}>
+            Discover
           </Button>
+          <Button color="inherit">
+            <Link to="/Login">Login</Link>
+          </Button>
+          {currentUser && (
+            <Button onClick={logout} color="inherit">
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>
