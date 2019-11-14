@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import React, { Component } from "react";
 import Home from "./Home";
 import Login from "./Login/Login";
+import Favourite from "./Favourite/Favourite";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         <Route exact path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route exact path="/home" component={Home} />
+        <Route exact path="/fav" component={Favourite} />
         {/* <Route path='/chat' component={Chat} />
       <Route path='/applied' component={Applied} />
       <Route path='/signup' component={SignUp} />

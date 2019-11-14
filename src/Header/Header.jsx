@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { Link } from "react-router-dom";
+import { navigate } from "@reach/router";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,7 @@ export default function Header() {
         function() {
           localStorage.removeItem("user");
           setcurrentUser(null);
+          navigate("/home");
         },
         function(error) {
           // An error happened.
@@ -46,7 +48,7 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="white">
+      <AppBar position="static" color="secondary">
         <Toolbar>
           {/* <IconButton
             edge="start"
@@ -56,25 +58,42 @@ export default function Header() {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography className={classes.title}>TheMovieCollection</Typography>
-          <Typography style={{ flexGrow: "6" }}>
-            <Button variant="h6" color="inherit">
-              Discover
-            </Button>
+
+          <Typography color="inherit" className={classes.title}>
+            <Link
+              to="/home"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              TheMovieCollection
+            </Link>
+          </Typography>
+
+          <Typography style={{ flexGrow: "4" }}>
+            <Button color="inherit">Discover</Button>
           </Typography>
 
           {currentUser ? (
             <div>
               <Button>
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
+                <Link to="/fav">
+                  <IconButton aria-label="add to favorites">
+                    <FavoriteIcon color="inherit" />
+                  </IconButton>
+                </Link>
               </Button>
               <Button onClick={logout}>Logout</Button>
             </div>
           ) : (
-            <Button color="inherit">
-              <Link to="/Login">Login</Link>
+            <Button>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "inherit"
+                }}
+                to="/Login"
+              >
+                Login / SignUp
+              </Link>
             </Button>
           )}
         </Toolbar>

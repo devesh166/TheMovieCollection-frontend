@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function RecipeReviewCard(props) {
-  //   console.log(props);
+  // console.log(props.isLiked);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -48,6 +48,16 @@ export default function RecipeReviewCard(props) {
     setExpanded(!expanded);
   };
 
+  const [color, setcolor] = useState("");
+  const [isDisabled, setisDisabled] = useState(false);
+
+  useEffect(() => {
+    setcolor(props.isLiked ? "error" : "");
+    setisDisabled(props.isLiked ? true : false);
+  }, [props.isLiked]);
+  // setcolor(props.isLiked ? "error" : "");
+  // setisDisabled(props.isLiked ? true : false);
+  // console.log(props.isLiked);
   return (
     <div className="">
       <Card className={classes.card}>
@@ -80,9 +90,21 @@ export default function RecipeReviewCard(props) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
+          {props.isFavouritComponent === "false" && (
+            <button
+              style={{ backgroundColor: "white", border: "none" }}
+              disabled={isDisabled}
+              onClick={() => {
+                setcolor("error");
+                setisDisabled(true);
+                props.onclick();
+              }}
+            >
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon color={color} />
+              </IconButton>
+            </button>
+          )}
           {/* <IconButton aria-label="share">
             <ShareIcon />
           </IconButton> */}
