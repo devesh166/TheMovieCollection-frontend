@@ -20,14 +20,27 @@ class Login extends Component {
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+  // authListener = () => {
+  //   fire.auth().onAuthStateChanged(user => {
+  //     //   console.log(user);
 
+  //     if (user) {
+  //       this.setState({ user });
+  //       console.log("logged in");
+  //     } else {
+  //       this.setState({ user: null });
+  //       localStorage.removeItem("user");
+  //       console.log("logged out");
+  //     }
+  //   });
+  // };
   login(e) {
     e.preventDefault();
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        console.log(u);
+        // console.log(u);
         localStorage.setItem("user", JSON.stringify(this.state.email));
         this.props.history.push("/home");
         // console.log(this.props.history);

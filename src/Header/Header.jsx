@@ -22,16 +22,35 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
+// let authListener = () => {
+//   fire.auth().onAuthStateChanged(user => {
+//     //   console.log(user);
 
-export default function Header() {
+//     if (user) {
+//       // this.setState({ user });
+//       console.log("logged in");
+//     } else {
+//       navigate("/home");
+
+//       // this.setState({ user: null });
+//       // localStorage.removeItem("user");
+//       console.log("logged out");
+//     }
+//   });
+// };
+export default function Header(props) {
+  // console.log(props);
   let logout = () => {
     fire
       .auth()
       .signOut()
       .then(
         function() {
-          localStorage.removeItem("user");
+          // localStorage.removeItem("user");
           setcurrentUser(null);
+          // console.log(props);
+          props.auth();
+          // console.log(props);
           navigate("/home");
         },
         function(error) {
@@ -74,13 +93,17 @@ export default function Header() {
 
           {currentUser ? (
             <div>
-              <Button>
+              {/* */}
+              <IconButton
+                aria-label="add to favorites"
+                // onClick={() => props.isFavourite()}
+              >
                 <Link to="/fav">
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon color="inherit" />
-                  </IconButton>
+                  <FavoriteIcon color="inherit" />
                 </Link>
-              </Button>
+              </IconButton>
+              {/* </Link> */}
+
               <Button onClick={logout}>Logout</Button>
             </div>
           ) : (

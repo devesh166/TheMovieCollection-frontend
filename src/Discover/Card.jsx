@@ -15,6 +15,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Icon, InlineIcon } from "@iconify/react";
+import deleteIcon from "@iconify/icons-mdi/delete";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -47,6 +49,9 @@ export default function RecipeReviewCard(props) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  let removeFavourite = () => {
+    console.log(props.movie.id);
+  };
 
   const [color, setcolor] = useState("");
   const [isDisabled, setisDisabled] = useState(false);
@@ -58,6 +63,7 @@ export default function RecipeReviewCard(props) {
   // setcolor(props.isLiked ? "error" : "");
   // setisDisabled(props.isLiked ? true : false);
   // console.log(props.isLiked);
+  let currentUser = localStorage.getItem("user");
   return (
     <div className="">
       <Card className={classes.card}>
@@ -72,7 +78,7 @@ export default function RecipeReviewCard(props) {
           //     //   <MoreVertIcon />
           //     // </IconButton>
           //   }
-          title={props.movie.title}
+          title={props.movie.title || props.movie.name}
           subheader={props.movie.vote_average + "/10"}
         />
         <CardMedia
@@ -90,21 +96,33 @@ export default function RecipeReviewCard(props) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          {props.isFavouritComponent === "false" && (
-            <button
+          {props.isFavouritComponent === "false" ? (
+            <IconButton
+              aria-label="add to favorites"
               style={{ backgroundColor: "white", border: "none" }}
               disabled={isDisabled}
               onClick={() => {
-                setcolor("error");
-                setisDisabled(true);
-                props.onclick();
+                if (currentUser) {
+                  setcolor("error");
+                  setisDisabled(true);
+                  props.onclick();
+                } else {
+                  alert("please login");
+                }
               }}
             >
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon color={color} />
-              </IconButton>
-            </button>
+              <FavoriteIcon color={color} />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => {
+                props.removeFavourites(props.movie.id);
+              }}
+            >
+              <Icon icon={deleteIcon} />
+            </IconButton>
           )}
+
           {/* <IconButton aria-label="share">
             <ShareIcon />
           </IconButton> */}

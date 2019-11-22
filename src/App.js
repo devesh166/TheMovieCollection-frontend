@@ -1,50 +1,71 @@
 import "./App.css";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import Home from "./Home";
+import fire from "./Config/Fire.js";
 import Login from "./Login/Login";
 import Favourite from "./Favourite/Favourite";
+import AuthenticatedRoute from "./Components/AuthenticatedRoute";
+import UnauthenticatedRoute from "./Components/UnauthenticatedRoute";
+import { Switch } from "@material-ui/core";
 
-class App extends Component {
-  render() {
-    return (
-      // <React.Fragment>
-      //   <Home />
-      // </React.Fragment>
-      <BrowserRouter>
-        <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/fav" component={Favourite} />
-        {/* <Route path='/chat' component={Chat} />
-      <Route path='/applied' component={Applied} />
-      <Route path='/signup' component={SignUp} />
-      <Route path='/editjobs/:job' component={EditJobs} />
-      <Route path='/company' component={Company} /> */}
-      </BrowserRouter>
-    );
+function App(props) {
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  useEffect(() => {
+    onLoad();
+    // authListener()
+  }, []);
+
+  function onLoad() {
+    if (localStorage.getItem("user")) userHasAuthenticated(true);
   }
-}
+  let authListener = () => {
+    fire.auth().onAuthStateChanged(user => {
+      //   console.log(user);
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+      if (user) {
+        setUser(user);
+        userHasAuthenticated(true);
+        console.log("logged in");
+      } else {
+        setUser(null);
+        userHasAuthenticated(false);
+        localStorage.removeItem("user");
+        console.log("logged out");
+      }
+    });
+  };
+  return (
+    <div>
+      <BrowserRouter>
+        <UnauthenticatedRoute
+          path="/login"
+          component={Login}
+          appProps={{ isAuthenticated }}
+        />
+        <AuthenticatedRoute
+          exact
+          path="/fav"
+          component={Favourite}
+          appProps={{ isAuthenticated, authListener }}
+        />
+        <Route
+          path="/home"
+          render={props => (
+            <Home authListener={authListener} user={user} {...props} />
+          )}
+        />
+        <Route
+          exact
+          path="/"
+          render={props => (
+            <Home authListener={authListener} user={user} {...props} />
+          )}
+        />
+      </BrowserRouter>
+    </div>
+  );
+}
 
 export default App;
